@@ -11,13 +11,15 @@ import matplotlib.pyplot as plt       # Libreria para graficar
 input_images_path = "C:/Users/operador/Documents/Challenge_PPS/Challenge_Fred/obj"
 files_names = os.listdir(input_images_path)
 # print (files_names)                 # OBSERVAR SI ESTA TOMANDO LAS IMAGENES
-alto = []                             # Almacenar en listas
-ancho = []
-resolution = []
-for file_name in files_names:
-      # print(file_name)
+#*****************************************************************************
+def crear_df (files_names):
+    alto = []                             # Almacenar en listas
+    ancho = []
+    resolution = []
+    for file_name in files_names:
+      #print(file_name)
       if file_name.split(".")[-1] not in ["jpg","png"]:
-           continue                   #SOLO LEER IMAGENES
+            continue                   #SOLO LEER IMAGENES
       image_path = input_images_path + "/" + file_name
       #print (image_path)              # OBSERVAR SI ESTA TOMANDO EL PATH
       image = cv2.imread(image_path)
@@ -31,10 +33,16 @@ for file_name in files_names:
       resolution_1 = image.shape[1]*image.shape[0]
       #print (resolution_1)           # OBSERVAR LA RESOLUCIÓN
       resolution.append(resolution_1)
-#*****************************************************************************
-# DATAFRAME
-df = pd.DataFrame(list(zip(alto, ancho, resolution)),
-                  columns = ["Alto", "Ancho", "Resolución"])
+    # DATAFRAME
+    df = pd.DataFrame(list(zip(alto, ancho, resolution)),
+                   columns = ["Alto", "Ancho", "Resolución"])
+    return df
+print (crear_df(files_names))
+resolution = crear_df(files_names)['Resolución']
+# #****************************************************************************
+# # DATAFRAME
+# df = pd.DataFrame(list(zip(alto, ancho, resolution)),
+#                   columns = ["Alto", "Ancho", "Resolución"])
 #*****************************************************************************
 # FUNCIONES
 # Máximo
@@ -61,7 +69,7 @@ Mediana = np.median(resolution)
 Moda = stats.mode(resolution)
 #*****************************************************************************
 # RESULTADOS
-print (df)
+# print (df)
 print ('El valor máximo es: ' , maximo(resolution))
 print ('El valor minimo es: ' , minimo(resolution))
 print ('Media:', Media)
